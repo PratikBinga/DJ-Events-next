@@ -1,8 +1,9 @@
-import Layout from "../../components/Layout";
-import styles from "../../styles/Event.module.css";
+import Layout from "@/components/Layout";
+import styles from "@/styles/Event.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
+import { API_URL } from "@/config/index";
 
 export default function EventPage({ evt }) {
   const deleteEvent = () => {
@@ -28,7 +29,15 @@ export default function EventPage({ evt }) {
         </span>
         <h1>{evt.name}</h1>
         <div className={styles.image}>
-          <Image src={evt.image} width={960} height={600} />
+          <Image
+            src={
+              evt.image
+                ? evt.image.formats.medium.url
+                : "/images/event-default.png"
+            }
+            width={960}
+            height={600}
+          />
         </div>
         <h3>Performers:</h3>
         <p>{evt.performers}</p>
@@ -42,7 +51,8 @@ export default function EventPage({ evt }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch("http://localhost:3000/api/events");
+  // const res = await fetch("http://localhost:3000/api/events");
+  const res = await fetch(`${API_URL}/events`);
   const events = await res.json();
   console.log(events, "events--");
   const paths = events.map((evt, idx) => ({
@@ -58,7 +68,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug } }) {
-  const res = await fetch(`http://localhost:3000/api/events/${slug}`);
+  // const res = await fetch(`http://localhost:3000/api/events/${slug}`);
+  const res = await fetch(`${API_URL}/events/?slug=${slug}`);
   const events = await res.json();
 
   return {

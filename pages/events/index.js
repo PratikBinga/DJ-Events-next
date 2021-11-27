@@ -1,6 +1,7 @@
-import Layout from "../../components/Layout";
+import Layout from "@/components/Layout";
 import Link from "next/link";
-import EventItem from "../../components/EventItem";
+import EventItem from "@/components/EventItem";
+import { API_URL } from "@/config/index";
 
 export default function index({ result }) {
   console.log(result, "data");
@@ -16,7 +17,8 @@ export default function index({ result }) {
 }
 
 export async function getServerSideProps() {
-  const data = await fetch("http://localhost:3000/api/events");
+  // const data = await fetch("http://localhost:1337/events");
+  const data = await fetch(`${API_URL}/events`);
   const result = await data.json();
   console.log(result, "result");
   return {
