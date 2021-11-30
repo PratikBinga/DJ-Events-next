@@ -181,7 +181,8 @@ export default function EditEvent({ evt }) {
   );
 }
 
-export async function getServerSideProps({ params: { id } }) {
+export async function getServerSideProps({ params: { id }, req }) {
+  console.log(req?.headers.cookie, "req in edit");
   const data = await fetch(`${API_URL}/events/${id}`);
   const evt = await data.json();
 
