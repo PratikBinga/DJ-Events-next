@@ -11,8 +11,9 @@ import Image from "next/image";
 import { FaImage } from "react-icons/fa";
 import Modal from "@/components/modal";
 import ImageUpload from "@/components/ImageUpload";
+import { parseCookies } from "@/helpers/index";
 
-export default function EditEvent({ evt }) {
+export default function EditEvent({ evt, token }) {
   console.log(evt, "Props val");
   const [values, setValues] = useState({
     name: evt?.name,
@@ -47,6 +48,7 @@ export default function EditEvent({ evt }) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(values),
     });
@@ -175,7 +177,11 @@ export default function EditEvent({ evt }) {
       </div>
 
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        <ImageUpload evtId={evt.id} imageUploaded={imageUploaded} />
+        <ImageUpload
+          evtId={evt.id}
+          imageUploaded={imageUploaded}
+          token={token}
+        />
       </Modal>
     </Layout>
   );
@@ -183,6 +189,8 @@ export default function EditEvent({ evt }) {
 
 export async function getServerSideProps({ params: { id }, req }) {
   console.log(req?.headers.cookie, "req in edit");
+
+  const { token } = parseCookies(req);
   const data = await fetch(`${API_URL}/events/${id}`);
   const evt = await data.json();
 
@@ -190,6 +198,7 @@ export async function getServerSideProps({ params: { id }, req }) {
   return {
     props: {
       evt,
+      token,
     },
   };
 }

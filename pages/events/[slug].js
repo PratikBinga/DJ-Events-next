@@ -7,13 +7,14 @@ import { API_URL } from "@/config/index";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// import EventMap from "@/components/EventMap";
 
 export default function EventPage({ evt }) {
   const router = useRouter();
   console.log(evt, "evt");
 
   const deleteEvent = async (e, event) => {
-    console.log(e,event, "inside");
+    console.log(e, event, "inside");
     if (confirm(`Are you sure to Delete?`)) {
       const res = await fetch(`${API_URL}/events/${event.id}`, {
         method: "DELETE",
@@ -27,11 +28,11 @@ export default function EventPage({ evt }) {
       }
     }
   };
-
+  console.log(evt.image, "imagein slug--");
   return (
     <Layout title={"Event Details"}>
       <div className={styles.event}>
-        <div className={styles.controls}>
+        {/* <div className={styles.controls}>
           <Link href={`/events/edit/${evt.id}`}>
             <a>
               <FaPencilAlt /> Edit Event
@@ -44,7 +45,7 @@ export default function EventPage({ evt }) {
           >
             <FaTimes /> Delete
           </a>
-        </div>
+        </div> */}
 
         <span>
           {new Date(evt.date).toLocaleDateString("en-US")} at {evt.time}
@@ -52,7 +53,7 @@ export default function EventPage({ evt }) {
         <ToastContainer />
         <h1>{evt.name}</h1>
         <div className={styles.image}>
-          <Image
+          {/* <Image
             src={
               evt.image
                 ? evt.image.formats.medium.url
@@ -60,7 +61,16 @@ export default function EventPage({ evt }) {
             }
             width={960}
             height={600}
-          />
+          /> */}
+          {evt.image && (
+            <div className={styles.image}>
+              <Image
+                src={evt.image.formats.medium.url}
+                width={960}
+                height={600}
+              />
+            </div>
+          )}
         </div>
         <h3>Performers:</h3>
         <p>{evt.performers}</p>
@@ -68,6 +78,7 @@ export default function EventPage({ evt }) {
         <p>{evt.description}</p>
         <h3>Venue: {evt.venue}</h3>
         <p>{evt.address}</p>
+        {/* <EventMap evt={evt} /> */}
       </div>
     </Layout>
   );
