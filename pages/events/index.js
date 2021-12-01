@@ -15,7 +15,7 @@ export default function index({ events, page, total }) {
       <h1>Events</h1>
       {events.length === 0 && <h3>No events to show</h3>}
       {events?.map((evt, idx) => (
-        <EventItem evt={evt} />
+        <EventItem evt={evt} key={idx} />
       ))}
 
       <Pagination page={page} total={total} />

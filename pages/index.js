@@ -9,7 +9,7 @@ export default function Home({ result }) {
       <h1>Upcoming Events</h1>
       {result?.length === 0 && <h3>No events to show</h3>}
       {result?.map((evt, idx) => (
-        <EventItem evt={evt} />
+        <EventItem evt={evt} key={idx} />
       ))}
     </Layout>
   );
